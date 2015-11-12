@@ -3,26 +3,30 @@
 
 ## Write a short comment describing this function
 
-makeCacheMatrix <- function(x = matrix()) {
+makeCacheMatrix <- function(m = matrix()) {
     
-  inv_x <- NULL
-  
+  # 'i' is the inverse of the matrix
+  # 'm_cache' is the matrix that was solved
+
+  i <- NULL    
+
   set <- function(y) {
-    x <<- y
-    inv_x <<- NULL
+    m <<- y
+    i <<- NULL
   }
   
   get <- function() {
-    x
+    m
   }
   
-  setInverse <- function() {
-    inv_x <<- solve(x)
+  setInverse <- function(inv) {
+    i <<- inv
   }
   
   getInverse <- function() {
-    inv_x
+    i
   }
+  
   
   list(set = set, get = get, setInverse = setInverse, getInverse = getInverse)
 }
@@ -30,20 +34,26 @@ makeCacheMatrix <- function(x = matrix()) {
 
 ## Returns the inverse of a matrix, checks cache first
 
-cacheSolve <- function(x, ...) {
+cacheSolve <- function(m, ...) {
   
   ## check cache for inverse
-  m <- x$getInverse()
-  
-  if (!is.null(m)) {
+  i <- m$getInverse()
+
+  ## make sure matrix hasn't change, otherwise inverse is wrong
+  if (!is.null(i)) {
     ## inverse is in cache
     message("Getting cache data, inverse of matrix")
+    return (i)
   }
-  
+    
+  message("cache is empty")
   ## cache is empty, so solve inverse
-  data_m <- x$get()
-  m <- solve(data_m)
-  x$setInverse(m)
+  data_m <- m$get()
+  i <- solve(data_m,...)
+  m$setInverse(i)
+    
+  ## matrix isn't the same
+  ## TODO: Solve for new matrix
   
-  m
+  i
 }
