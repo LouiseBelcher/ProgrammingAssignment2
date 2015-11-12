@@ -52,8 +52,5 @@ cacheSolve <- function(m, ...) {
   i <- solve(data_m,...)
   m$setInverse(i)
     
-  ## matrix isn't the same
-  ## TODO: Solve for new matrix
-  
   i
 }
